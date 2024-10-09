@@ -1,4 +1,4 @@
-RRT Subgoal Enhanced Algorithm
+# RRT Subgoal Enhanced Algorithm
 Overview
 
 This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, called RRT Subgoal Enhanced. The algorithm includes several improvements, such as bottleneck detection, subgoal sampling, path smoothing, and batch rewiring to enhance the efficiency and quality of path planning in environments with obstacles.
