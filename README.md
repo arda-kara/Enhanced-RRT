@@ -21,32 +21,18 @@ This project implements an enhanced version of the Rapidly-exploring Random Tree
 - scipy
 
 You can install the necessary libraries using:
-
 pip install numpy matplotlib scipy
-
-markdown
-
 
 ## How to Run
 
 1. Clone the repository:
-
 git clone https://github.com/your_username/RRT-Subgoal-Enhanced.git
 
-css
-
 2. Navigate to the project directory:
-
 cd RRT-Subgoal-Enhanced
 
-css
-
 3. Run the code:
-
 python main.py
-
-markdown
-
 
 The script will generate 10 random scenarios and visualize the planned path for each scenario, if a path is found.
 
@@ -59,21 +45,21 @@ The `Node` class represents a single node in the RRT tree. It tracks the node's 
 ### RRTSubgoalEnhanced Class
 
 The `RRTSubgoalEnhanced` class implements the main algorithm with the following key methods:
-- `distance(node1, node2)`: Computes the Euclidean distance between two nodes.
-- `get_random_node()`: Generates a random node within the map, biased towards subgoals.
-- `nearest_node(random_node)`: Finds the nearest node in the tree using a KDTree.
-- `is_collision(node1, node2)`: Checks for collisions between two nodes.
-- `steer(from_node, to_node)`: Generates a new node in the direction of a target node, constrained by the step size.
-- `rewiring(new_node)`: Rewires nearby nodes to improve connectivity and reduce path cost.
-- `planning()`: Executes the RRT algorithm to find a path from the start node to the goal.
-- `smooth_path(path)`: Smooths the generated path by removing unnecessary intermediate nodes.
-- `generate_path(goal_node)`: Generates the path from the start node to the goal node.
+- distance(node1, node2): Computes the Euclidean distance between two nodes.
+- get_random_node(): Generates a random node within the map, biased towards subgoals.
+- nearest_node(random_node): Finds the nearest node in the tree using a KDTree.
+- is_collision(node1, node2): Checks for collisions between two nodes.
+- steer(from_node, to_node): Generates a new node in the direction of a target node, constrained by the step size.
+- rewiring(new_node): Rewires nearby nodes to improve connectivity and reduce path cost.
+- planning(): Executes the RRT algorithm to find a path from the start node to the goal.
+- smooth_path(path): Smooths the generated path by removing unnecessary intermediate nodes.
+- generate_path(goal_node): Generates the path from the start node to the goal node.
 
 ### Simulation Parameters
 
-- Map Size: Set to `(200, 200)` by default.
-- Step Size: Set to `5`.
-- Max Iterations: Increased to `2000` to ensure comprehensive exploration in complex maps.
+- Map Size: Set to (200, 200) by default.
+- Step Size: Set to 5.
+- Max Iterations: Increased to 2000 to ensure comprehensive exploration in complex maps.
 - Obstacles: Random rectangular obstacles are generated and placed within the map to simulate real-world constraints.
 
 ## Visualization
@@ -92,7 +78,7 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 
 ## Author
 
-- [Your Name](https://github.com/your_username)
+- Your Name (https://github.com/your_username)
 
 ## Contributions
 
