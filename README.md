@@ -1,151 +1,90 @@
-Enhanced RRT Path Planning Algorithm
+RRT Subgoal Enhanced Algorithm
+Overview
 
-An implementation of an Enhanced Rapidly-exploring Random Tree (RRT) algorithm with multiple improvements to increase efficiency and performance in complex environments.
-Table of Contents
+This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, called RRT Subgoal Enhanced. The algorithm includes several improvements, such as bottleneck detection, subgoal sampling, path smoothing, and batch rewiring to enhance the efficiency and quality of path planning in environments with obstacles.
+Features
 
-    Introduction
-    Algorithm Enhancements
-    Dependencies
-    Installation
-    Usage
-    Examples
-    Project Structure
-    Contributing
-    License
-    Acknowledgements
+    Subgoal Sampling: Biased sampling towards subgoals in bottleneck areas to improve the exploration of complex regions.
+    Path Smoothing: Removes unnecessary intermediate nodes to produce smoother paths.
+    KDTree Nearest Neighbor Search: Efficiently finds the nearest node in the RRT tree using a KDTree.
+    Batch Rewiring: Rewires nearby nodes to reduce path cost while maintaining tree connectivity.
+    Bottleneck Detection: Identifies and resolves bottlenecks where node connectivity is limited or local density is high.
+    Multi-threading: Utilizes concurrent processing for efficient rewiring of nodes.
 
-Introduction
+Requirements
 
-Path planning is crucial in robotics and autonomous systems for navigating from a start point to a goal point while avoiding obstacles. The Rapidly-exploring Random Tree (RRT) algorithm is popular due to its efficiency in high-dimensional spaces.
+    Python 3.x
+    numpy
+    matplotlib
+    scipy
 
-This project implements an enhanced version of the RRT algorithm with several improvements, making it more efficient and reliable in complex environments.
-Algorithm Enhancements
+You can install the necessary libraries using:
 
-The enhanced RRT algorithm includes the following key improvements:
+pip install numpy matplotlib scipy
 
-    Efficient Nearest Neighbor Search using KD-Tree
+How to Run
 
-    Utilizes a KD-Tree for efficient nearest neighbor searches, significantly reducing computation time.
-
-    Adaptive Step Size in Steer Function
-
-    Adjusts the step size dynamically based on the distance to the target node, allowing for finer movements near obstacles or the goal.
-
-    Enhanced Collision Checking
-
-    Performs collision checks by sampling multiple points along the path between nodes, improving the accuracy of obstacle detection.
-
-    Rewiring of Nearby Nodes (Similar to RRT*)
-
-    Optimizes the tree by rewiring nodes if a shorter path is found, reducing the overall path cost.
-
-    Subgoal Sampling and Bottleneck Detection
-        Detects bottlenecks based on node connectivity and local density.
-        Samples subgoals around bottlenecks to guide the exploration more effectively.
-
-    Parallel Processing with ThreadPoolExecutor
-
-    Accelerates the rewiring process by parallelizing computations using Python's ThreadPoolExecutor.
-
-    Path Smoothing using Line-of-Sight
-
-    Removes unnecessary intermediate nodes by checking for collision-free straight lines between nodes, resulting in a smoother path.
-
-Dependencies
-
-The project requires the following Python libraries:
-
-    Python 3.6 or higher
-    NumPy
-    Matplotlib
-    SciPy
-
-Installation
-
-    Clone the Repository
+    Clone the repository:
 
     bash
 
-git clone https://github.com/yourusername/enhanced_rrt.git
-cd enhanced_rrt
+git clone https://github.com/your_username/RRT-Subgoal-Enhanced.git
 
-Create a Virtual Environment (Optional but Recommended)
-
-bash
-
-python3 -m venv venv
-source venv/bin/activate  # On Windows, use venv\Scripts\activate
-
-Install Dependencies
+Navigate to the project directory:
 
 bash
 
-pip install -r requirements.txt
+cd RRT-Subgoal-Enhanced
 
-If a requirements.txt file is not provided, install dependencies manually:
-
-bash
-
-    pip install numpy matplotlib scipy
-
-Usage
-
-The main script generates multiple random scenarios and visualizes the path planning results.
-
-To run the script:
+Run the code:
 
 bash
 
-python enhanced_rrt.py
+    python main.py
 
-Parameters:
+The script will generate 10 random scenarios and visualize the planned path for each scenario, if a path is found.
+Code Explanation
+Node Class
 
-    map_size: Tuple specifying the width and height of the map (e.g., (200, 200)).
-    step_size: Maximum distance between nodes (default is 5).
-    max_iter: Maximum number of iterations for the algorithm (default is 2000).
-    num_scenarios: Number of random scenarios to simulate (default is 10).
+The Node class represents a single node in the RRT tree. It tracks the node's coordinates, parent, children, and the cost to reach the node from the start node.
+RRTSubgoalEnhanced Class
 
-You can modify these parameters directly in the script or adapt the code to accept command-line arguments.
-Examples
+The RRTSubgoalEnhanced class implements the main algorithm with the following key methods:
 
-The script generates num_scenarios random scenarios, each with:
+    distance(node1, node2): Computes the Euclidean distance between two nodes.
+    get_random_node(): Generates a random node within the map, biased towards subgoals.
+    nearest_node(random_node): Finds the nearest node in the tree using a KDTree.
+    is_collision(node1, node2): Checks for collisions between two nodes.
+    steer(from_node, to_node): Generates a new node in the direction of a target node, constrained by the step size.
+    rewiring(new_node): Rewires nearby nodes to improve connectivity and reduce path cost.
+    planning(): Executes the RRT algorithm to find a path from the start node to the goal.
+    smooth_path(path): Smooths the generated path by removing unnecessary intermediate nodes.
+    generate_path(goal_node): Generates the path from the start node to the goal node.
 
-    Randomly generated start and goal positions that are not inside obstacles.
-    Randomly generated obstacles with varying sizes, positions, and orientations.
-    Visualization of the path found by the enhanced RRT algorithm, or a message indicating if no path was found.
+Simulation Parameters
 
-Sample Output:
+    Map Size: Set to (200, 200) by default.
+    Step Size: Set to 5.
+    Max Iterations: Increased to 2000 to ensure comprehensive exploration in complex maps.
+    Obstacles: Random rectangular obstacles are generated and placed within the map to simulate real-world constraints.
 
-After running the script, a window displays multiple subplots, each representing a different scenario. Obstacles are shown in gray, the start point in blue, the goal point in red, and the planned path in green.
+Visualization
 
-Note: Replace the placeholder with an actual screenshot of the output.
-Project Structure
+The code generates 10 random scenarios, each visualized with:
 
-bash
+    Obstacles (gray rectangles)
+    Start Node (blue point)
+    Goal Node (red point)
+    Planned Path (green line)
 
-enhanced_rrt/
-├── enhanced_rrt.py         # Main script containing the RRT implementation
-├── requirements.txt        # List of Python dependencies
-├── README.md               # Project documentation
-├── LICENSE                 # License information
-└── images/
-    └── sample_output.png   # Sample output image
-
-Contributing
-
-Contributions are welcome! If you'd like to contribute:
-
-    Fork the repository.
-    Create a new branch for your feature or bug fix.
-    Commit your changes with descriptive messages.
-    Push your branch and create a pull request.
-
-Please ensure your code adheres to the existing style and includes appropriate documentation.
+If no valid path is found, the scenario will display a "No Path Found" message.
 License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
-Acknowledgements
+This project is licensed under the MIT License. See the LICENSE file for more details.
+Author
 
-    The RRT algorithm is widely used in robotics and path planning research.
-    This implementation was inspired by various resources and academic papers on RRT and its variants.
-    Special thanks to the open-source community for providing the tools and libraries that make projects like this possible.
+    Your Name
+
+Contributions
+
+Feel free to fork this project, create pull requests, or submit issues if you find any bugs or want to contribute new features.
