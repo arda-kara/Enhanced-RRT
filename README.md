@@ -2,16 +2,16 @@
 
 ## Overview
 
-This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, called RRT Subgoal Enhanced. The algorithm includes several improvements, such as bottleneck detection, subgoal sampling, path smoothing, and batch rewiring to enhance the efficiency and quality of path planning in environments with obstacles.
+This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, called **RRT Subgoal Enhanced**. The algorithm includes several improvements, such as bottleneck detection, subgoal sampling, path smoothing, and batch rewiring to enhance the efficiency and quality of path planning in environments with obstacles.
 
 ## Features
 
-- Subgoal Sampling: Biased sampling towards subgoals in bottleneck areas to improve the exploration of complex regions.
-- Path Smoothing: Removes unnecessary intermediate nodes to produce smoother paths.
-- KDTree Nearest Neighbor Search: Efficiently finds the nearest node in the RRT tree using a KDTree.
-- Batch Rewiring: Rewires nearby nodes to reduce path cost while maintaining tree connectivity.
-- Bottleneck Detection: Identifies and resolves bottlenecks where node connectivity is limited or local density is high.
-- Multi-threading: Utilizes concurrent processing for efficient rewiring of nodes.
+- **Subgoal Sampling**: Biased sampling towards subgoals in bottleneck areas to improve the exploration of complex regions.
+- **Path Smoothing**: Removes unnecessary intermediate nodes to produce smoother paths.
+- **KDTree Nearest Neighbor Search**: Efficiently finds the nearest node in the RRT tree using a KDTree.
+- **Batch Rewiring**: Rewires nearby nodes to reduce path cost while maintaining tree connectivity.
+- **Bottleneck Detection**: Identifies and resolves bottlenecks where node connectivity is limited or local density is high.
+- **Multi-threading**: Utilizes concurrent processing for efficient rewiring of nodes.
 
 ## Requirements
 
@@ -20,7 +20,9 @@ This project implements an enhanced version of the Rapidly-exploring Random Tree
 - matplotlib
 - scipy
 
-You can install the necessary libraries using:
+Install the necessary libraries using:
+
+```bash
 pip install numpy matplotlib scipy
 
 ## How to Run
