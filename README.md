@@ -1,91 +1,126 @@
-# RRT Subgoal Enhanced Algorithm
 
-## Overview
+# RRTSubgoalEnhanced: An Enhanced RRT Algorithm with Subgoal Sampling, Bottleneck Detection, and Smoothing
 
-This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, called **RRT Subgoal Enhanced**. The algorithm includes several improvements, such as bottleneck detection, subgoal sampling, path smoothing, and batch rewiring to enhance the efficiency and quality of path planning in environments with obstacles.
+This project implements an enhanced version of the Rapidly-exploring Random Tree (RRT) algorithm, designed to efficiently navigate complex environments. The algorithm includes several improvements over the traditional RRT, such as bottleneck detection, subgoal sampling, and path smoothing. It is well-suited for motion planning tasks in the presence of obstacles.
 
 ## Features
 
-- **Subgoal Sampling**: Biased sampling towards subgoals in bottleneck areas to improve the exploration of complex regions.
-- **Path Smoothing**: Removes unnecessary intermediate nodes to produce smoother paths.
-- **KDTree Nearest Neighbor Search**: Efficiently finds the nearest node in the RRT tree using a KDTree.
-- **Batch Rewiring**: Rewires nearby nodes to reduce path cost while maintaining tree connectivity.
-- **Bottleneck Detection**: Identifies and resolves bottlenecks where node connectivity is limited or local density is high.
-- **Multi-threading**: Utilizes concurrent processing for efficient rewiring of nodes.
+- **Subgoal Sampling**: Biased sampling towards bottleneck regions to improve exploration and goal-reaching.
+- **Bottleneck Detection**: Detects areas of high node density and adjusts sampling to overcome local minima in exploration.
+- **Path Smoothing**: Implements a two-phase path smoothing process to optimize the final path for directness and smoothness.
+- **Batch Rewiring with Threading**: Utilizes multi-threading for efficient batch processing of node rewiring, improving path quality dynamically.
 
-## Requirements
+## Installation
 
-- Python 3.x
-- numpy
-- matplotlib
-- scipy
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/RRTSubgoalEnhanced.git
+   cd RRTSubgoalEnhanced
+   ```
 
-Install the necessary libraries using:
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-pip install numpy matplotlib scipy
+3. The dependencies include:
+   - `numpy`: For numerical operations.
+   - `matplotlib`: For visualization and obstacle generation.
+   - `scipy`: For KD-Tree implementation and nearest neighbor search.
+   - `concurrent.futures`: For multi-threaded rewiring.
 
-## How to Run
+## Usage
 
-1. Clone the repository:
-git clone https://github.com/your_username/RRT-Subgoal-Enhanced.git
+You can run the algorithm with randomly generated obstacles and start/goal positions. The code will generate and visualize several different scenarios, showing paths found or indicating if no path exists.
 
-2. Navigate to the project directory:
-cd RRT-Subgoal-Enhanced
+### Example Code
 
-3. Run the code:
-python main.py
+```python
+from RRTSubgoalEnhanced import RRTSubgoalEnhanced, generate_random_obstacles
 
-The script will generate 10 random scenarios and visualize the planned path for each scenario, if a path is found.
+# Map parameters
+map_size = (200, 200)  # Map dimensions
+num_obstacles = 10     # Number of obstacles
 
-## Code Explanation
+# Generate random obstacles
+obstacles = generate_random_obstacles(num_obstacles, map_size)
 
-### Node Class
+# Set start and goal positions
+start = (10, 10)
+goal = (190, 190)
 
-The `Node` class represents a single node in the RRT tree. It tracks the node's coordinates, parent, children, and the cost to reach the node from the start node.
+# Initialize the RRT algorithm
+rrt = RRTSubgoalEnhanced(start, goal, obstacles, map_size)
 
-### RRTSubgoalEnhanced Class
+# Run the planning algorithm
+path = rrt.planning()
 
-The `RRTSubgoalEnhanced` class implements the main algorithm with the following key methods:
-- distance(node1, node2): Computes the Euclidean distance between two nodes.
-- get_random_node(): Generates a random node within the map, biased towards subgoals.
-- nearest_node(random_node): Finds the nearest node in the tree using a KDTree.
-- is_collision(node1, node2): Checks for collisions between two nodes.
-- steer(from_node, to_node): Generates a new node in the direction of a target node, constrained by the step size.
-- rewiring(new_node): Rewires nearby nodes to improve connectivity and reduce path cost.
-- planning(): Executes the RRT algorithm to find a path from the start node to the goal.
-- smooth_path(path): Smooths the generated path by removing unnecessary intermediate nodes.
-- generate_path(goal_node): Generates the path from the start node to the goal node.
+if path:
+    print("Path found!")
+    # Optionally visualize the path
+else:
+    print("No path found.")
+```
 
-### Simulation Parameters
+### Visualization
 
-- Map Size: Set to (200, 200) by default.
-- Step Size: Set to 5.
-- Max Iterations: Increased to 2000 to ensure comprehensive exploration in complex maps.
-- Obstacles: Random rectangular obstacles are generated and placed within the map to simulate real-world constraints.
+The algorithm will automatically generate and visualize several scenarios, plotting the obstacles, start, goal, and the path (if found). Below is an example of a scenario visualization.
 
-## Visualization
+![Path Visualization](./example_visualization.png)
 
-The code generates 10 random scenarios, each visualized with:
-- Obstacles (gray rectangles)
-- Start Node (blue point)
-- Goal Node (red point)
-- Planned Path (green line)
+### Parameters
 
-If no valid path is found, the scenario will display a "No Path Found" message.
+- `start`: The (x, y) coordinates of the starting position.
+- `goal`: The (x, y) coordinates of the goal position.
+- `map_size`: A tuple defining the size of the environment (width, height).
+- `step_size`: The maximum step size between nodes (default: 5 units).
+- `max_iter`: The maximum number of iterations to run the RRT algorithm (default: 2000).
+- `goal_tolerance`: The distance threshold for considering the goal as reached (default: 5 units).
+
+## Algorithm Overview
+
+The `RRTSubgoalEnhanced` class implements several key methods:
+
+- **`get_random_node()`**: Generates a random node within the map boundaries with a bias towards subgoals.
+- **`nearest_node(random_node)`**: Finds the nearest node in the tree using a KD-Tree for fast lookup.
+- **`is_collision(node1, node2)`**: Checks for collisions along the path between two nodes.
+- **`steer(from_node, to_node)`**: Steers a new node from the source towards the destination, constrained by step size.
+- **`rewiring(new_node)`**: Performs rewiring of nearby nodes for cost optimization using multi-threading.
+
+## Path Smoothing
+
+The algorithm applies two levels of path smoothing:
+1. **Line-of-Sight Check**: Removes unnecessary nodes by checking if a direct path between nodes is feasible.
+2. **Spline Smoothing (optional)**: Further refines the path for a smoother trajectory.
+
+## Contributing
+
+Contributions are welcome! Here’s how you can help:
+1. Fork the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/my-new-feature
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -am 'Add my new feature'
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/my-new-feature
+   ```
+5. Create a new Pull Request.
+
+### Contribution Ideas
+
+- Add spline-based smoothing for more refined paths.
+- Implement additional collision detection methods for more complex obstacles.
+- Experiment with parameter tuning for larger and more complex environments.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Author
+## Acknowledgements
 
-- Your Name (https://github.com/your_username)
-
-## Contributions
-
-Feel free to fork this project, create pull requests, or submit issues if you find any bugs or want to contribute new features.
-
----
-
-Thank you for checking out this project! Happy path planning!
+- The project builds upon the traditional RRT algorithm and introduces several enhancements inspired by research in motion planning and optimization.
