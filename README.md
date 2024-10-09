@@ -24,26 +24,32 @@ Algorithm Enhancements
 The enhanced RRT algorithm includes the following key improvements:
 
     Efficient Nearest Neighbor Search using KD-Tree
-        Utilizes a KD-Tree for efficient nearest neighbor searches, significantly reducing computation time.
+
+    Utilizes a KD-Tree for efficient nearest neighbor searches, significantly reducing computation time.
 
     Adaptive Step Size in Steer Function
-        Adjusts the step size dynamically based on the distance to the target node, allowing for finer movements near obstacles or the goal.
+
+    Adjusts the step size dynamically based on the distance to the target node, allowing for finer movements near obstacles or the goal.
 
     Enhanced Collision Checking
-        Performs collision checks by sampling multiple points along the path between nodes, improving the accuracy of obstacle detection.
+
+    Performs collision checks by sampling multiple points along the path between nodes, improving the accuracy of obstacle detection.
 
     Rewiring of Nearby Nodes (Similar to RRT*)
-        Optimizes the tree by rewiring nodes if a shorter path is found, reducing the overall path cost.
+
+    Optimizes the tree by rewiring nodes if a shorter path is found, reducing the overall path cost.
 
     Subgoal Sampling and Bottleneck Detection
         Detects bottlenecks based on node connectivity and local density.
         Samples subgoals around bottlenecks to guide the exploration more effectively.
 
     Parallel Processing with ThreadPoolExecutor
-        Accelerates the rewiring process by parallelizing computations using Python's ThreadPoolExecutor.
+
+    Accelerates the rewiring process by parallelizing computations using Python's ThreadPoolExecutor.
 
     Path Smoothing using Line-of-Sight
-        Removes unnecessary intermediate nodes by checking for collision-free straight lines between nodes, resulting in a smoother path.
+
+    Removes unnecessary intermediate nodes by checking for collision-free straight lines between nodes, resulting in a smoother path.
 
 Dependencies
 
